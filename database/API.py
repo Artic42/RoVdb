@@ -21,6 +21,7 @@ import routers.mockBomb as mockBomb
 import routers.transmissor as transmissior
 import databaseManager.userConsults as userConsults
 from fastapi.middleware.cors import CORSMiddleware
+import databaseManager.eventActions as eventActions
 import shutil
 import ntfy
 
@@ -146,11 +147,22 @@ async def runEvery10Seconds():
         await asyncio.sleep(10)
 
 
+# Function that run every second
+async def runEverySecond():
+    while True:
+        eventActions.resetActivated("/Database/Database.db", "12001")
+        eventActions.resetActivated("/Database/Database.db", "12101")
+        eventActions.resetActivated("/Database/Database.db", "14000")
+        eventActions.resetActivated("/Database/Database.db", "14300")
+        await asyncio.sleep(1)
+
+
 # Define the lifespan context manager
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup logic
     task = asyncio.create_task(runEvery10Seconds())
+    task = asyncio.create_task(runEverySecond())
     yield
     # Teardown logic
     task.cancel()

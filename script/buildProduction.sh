@@ -17,7 +17,7 @@ sudo docker build -t lsb_api database
 sudo docker build -t lsb_web web
 
 # Run servers in doker
-sudo docker run -itd -p 7001:80 --name LSBWEB lsb_web
-sudo docker run -itd -p 7002:8000 --name LSBAPI lsb_api
+sudo docker run -itd -p 7001:80 --name LSBWEB --restart unless-stopped lsb_web
+sudo docker run -itd -p 7002:8000 --name LSBAPI --restart unless-stopped lsb_api
 
 rm web/login.js
